@@ -27,7 +27,5 @@ pub fn gcd(mut u: u64, mut v: u64) -> u64 {
 pub fn lcm(values: Vec<u64>) -> u64 {
     values
         .iter()
-        .fold(1, |lcm, factor| {
-        lcm * factor / gcd(lcm, *factor)
-    })
+        .fold(1, |lcm, factor| lcm * factor / gcd(lcm, *factor))
 }

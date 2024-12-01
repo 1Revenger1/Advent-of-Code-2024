@@ -45,7 +45,7 @@ macro_rules! impl_from {
                 Self::$kind_(sol)
             }
         }
-    }
+    };
 }
 
 impl_from!(i8, I8);
