@@ -8,11 +8,12 @@ pub fn solve(str: String) -> SolutionPair {
     let mut right_map: HashMap<i32, i32> = HashMap::new();
 
     for line in str.lines() {
-        let mut iter = line.split_ascii_whitespace();
-        left.push(iter.next().unwrap().parse::<i32>().unwrap());
-        let right_val = iter.next().unwrap().parse::<i32>().unwrap();
-        right.push(right_val);
-        *right_map.entry(right_val).or_default() += 1;
+        let (a, b) = line.split_once("   ").unwrap();
+        let av: i32 = a.parse().unwrap();
+        let bv: i32 = b.parse().unwrap();
+        left.push(av);
+        right.push(bv);
+        *right_map.entry(bv).or_default() += 1;
     }
 
     left.sort();
