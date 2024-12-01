@@ -12,7 +12,7 @@ pub fn solve(str: String) -> SolutionPair {
         left.push(iter.next().unwrap().parse::<i32>().unwrap());
         let right_val = iter.next().unwrap().parse::<i32>().unwrap();
         right.push(right_val);
-        *right_map.entry(right_val).or_insert(0) += 1;
+        *right_map.entry(right_val).or_default() += 1;
     }
 
     left.sort();
