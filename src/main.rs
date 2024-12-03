@@ -1,4 +1,5 @@
 #![feature(is_sorted)]
+#![feature(iter_advance_by)]
 
 mod days;
 mod etc;
