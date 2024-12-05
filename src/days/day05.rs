@@ -3,7 +3,7 @@ use std::collections::{HashMap, HashSet};
 use crate::{Solution, SolutionPair};
 
 pub fn solve(str: String) -> SolutionPair {
-    let (rules_str, page_nums) = str.split_once("\n\n").unwrap();
+    let (rules_str, updates) = str.split_once("\n\n").unwrap();
 
     let mut rules: HashMap<i32, Vec<i32>> = HashMap::new();
     for l in rules_str.lines() {
@@ -13,27 +13,12 @@ pub fn solve(str: String) -> SolutionPair {
         rules.entry(key).or_default().push(val);
     };
 
-    let valid_updates_sum: i32 = page_nums.lines().filter_map(|l| -> Option<i32> {
+    let mut valid_updates = Vec::new();
+    let mut invalid_updates = Vec::new();
+    'next_update: for l in updates.lines() {
         let mut seen: HashSet<i32> = HashSet::new();
         let pages: Vec<i32> = l.split(',').map(|p| p.parse().unwrap()).collect();
 
-        for p in &pages {
-            let must_be_after = rules.get(&p);
-            if let Some(arr) = must_be_after {
-                if arr.iter().any(|a| seen.contains(a)) {
-                    return None;
-                }
-            }
-            seen.insert(*p);
-        }
-
-        Some(pages.get(pages.len() / 2).unwrap().clone())
-    }).sum();
-
-    let invalid_updates_sum: i32 = page_nums.lines().filter_map(|l| {
-        let mut seen: HashSet<i32> = HashSet::new();
-        let pages: Vec<i32> = l.split(',').map(|p| p.parse().unwrap()).collect();
-    
         for p in &pages {
             let rule = rules.get(&p);
 
@@ -43,14 +28,18 @@ pub fn solve(str: String) -> SolutionPair {
             }
 
             if rule.unwrap().iter().any(|a| seen.contains(a)) {
-                return Some(pages);
+                invalid_updates.push(pages);
+                continue 'next_update;
             }
 
             seen.insert(*p);
         }
 
-        None
-    }).map(|mut update| {
+        valid_updates.push(pages);
+    }
+
+    let valid_updates_sum: i32 = valid_updates.iter().map(|u| u[u.len() / 2]).sum();
+    let invalid_updates_sum: i32 = invalid_updates.iter_mut().map(|update| {
         update.sort_by(|a, b| {
             let rule = rules.get(&a);
             if let None = rule {
