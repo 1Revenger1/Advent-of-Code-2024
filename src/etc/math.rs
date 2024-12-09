@@ -2,6 +2,7 @@ use std::mem::swap;
 
 // Binary GCD:
 // https://en.wikipedia.org/wiki/Binary_GCD_algorithm
+#[allow(dead_code)]
 pub fn gcd(mut u: u64, mut v: u64) -> u64 {
     if u == 0 {
         return v;
@@ -24,6 +25,7 @@ pub fn gcd(mut u: u64, mut v: u64) -> u64 {
     u << gcd_binary_exponent
 }
 
+#[allow(dead_code)]
 pub fn lcm(values: Vec<u64>) -> u64 {
     values
         .iter()
