@@ -1,5 +1,5 @@
 use std::fmt::{Display, Formatter, Result};
-use Solution::*;
+use crate::Solution::*;
 
 #[derive(Clone)]
 pub enum Solution {
