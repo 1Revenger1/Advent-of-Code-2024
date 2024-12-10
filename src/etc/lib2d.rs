@@ -25,6 +25,17 @@ impl ops::Add<Coordinates> for Coordinates {
     }
 }
 
+impl Coordinates {
+    pub fn neighbors_cardinal(&self) -> [Coordinates; 4] {
+        return [
+            *self + NORTH,
+            *self + EAST,
+            *self + SOUTH,
+            *self + WEST
+        ]
+    }
+}
+
 pub const NORTH_IDX: usize = 0;
 pub const NORTH: Coordinates = Coordinates( 0, -1);
 pub const SOUTH: Coordinates = Coordinates( 0,  1);
@@ -105,5 +116,9 @@ impl<T: Clone + Copy + PartialEq + Eq> Grid<T> {
         }
 
         None
+    }
+
+    pub fn get_max_size(&self) -> Coordinates {
+        return self.max_size;
     }
 }
