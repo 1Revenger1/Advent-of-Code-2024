@@ -1,26 +1,6 @@
-use std::{collections::{HashMap, HashSet}, ops};
+use std::collections::{HashMap, HashSet};
 
-use crate::{Solution, SolutionPair};
-
-
-#[derive(Clone, Copy, PartialEq, Eq, Hash, Debug)]
-struct Coordinates(i32, i32);
-
-impl ops::AddAssign<Coordinates> for Coordinates {
-    fn add_assign(&mut self, rhs: Coordinates) {
-        self.0 += rhs.0;
-        self.1 += rhs.1;
-    }
-
-}
-
-impl ops::Add<Coordinates> for Coordinates {
-    type Output = Coordinates;
-
-    fn add(self, _rhs: Coordinates) -> Coordinates {
-        return Coordinates(self.0 + _rhs.0, self.1 + _rhs.1)
-    }
-}
+use crate::{etc::lib2d::Coordinates, Solution, SolutionPair};
 
 pub fn solve(str: String) -> SolutionPair {
     let mut nodes: HashMap<char, Vec<Coordinates>> = HashMap::new();
