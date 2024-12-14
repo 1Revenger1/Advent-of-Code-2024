@@ -25,6 +25,13 @@ impl ops::Add<Coordinates> for Coordinates {
     }
 }
 
+impl ops::Mul<i32> for Coordinates {
+    type Output = Coordinates;
+    fn mul(self, rhs: i32) -> Self::Output {
+        Coordinates(self.0 * rhs, self.1 * rhs)
+    }
+}
+
 impl Coordinates {
     pub fn neighbors_cardinal(&self) -> [Coordinates; 4] {
         return [
