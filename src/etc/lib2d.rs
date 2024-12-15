@@ -25,6 +25,13 @@ impl ops::Add<Coordinates> for Coordinates {
     }
 }
 
+impl ops::Sub<Coordinates> for Coordinates {
+    type Output = Coordinates;
+    fn sub(self, rhs: Coordinates) -> Self::Output {
+        Coordinates(self.0 - rhs.0, self.1 - rhs.1)
+    }
+}
+
 impl ops::Mul<i32> for Coordinates {
     type Output = Coordinates;
     fn mul(self, rhs: i32) -> Self::Output {
