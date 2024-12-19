@@ -1,45 +1,35 @@
-use std::collections::{HashMap, HashSet};
+use std::collections::HashSet;
 
 use crate::{Solution, SolutionPair};
 
-fn p1<'a>(p: &'a str, cache: &mut HashMap<&'a str, bool>, towels: &HashSet<&str>, max_size: usize) -> bool {
-    if p.len() == 0 {
-        return true;
-    }
+fn p1(p: &str, towels: &HashSet<&str>, max_size: usize) -> bool {
+    let mut dp = vec![false; p.len() + 1];
+    dp[0] = true;
 
-    if cache.contains_key(p) {
-        return cache[p];
-    }
-
-    for i in (1..=p.len().min(max_size)).rev() {
-        if towels.contains(&p[0..i]) && p1(&p[i..], cache, towels, max_size) {
-            cache.insert(p, true);
-            return true;
+    for i in 0..p.len() {
+        for j in (i + 1)..=(i + max_size).min(p.len()) {
+            if towels.contains(&p[i..j]) {
+                dp[j] = dp[j] || dp[i];
+            }
         }
     }
-
-    cache.insert(p, false);
-    false
+    
+    dp[p.len()]
 }
 
-fn p2<'a>(p: &'a str, cache: &mut HashMap<&'a str, usize>, towels: &HashSet<&str>, max_size: usize) -> usize {
-    if p.len() == 0 {
-        return 1;
-    }
+fn p2<'a>(p: &'a str, towels: &HashSet<&str>, max_size: usize) -> usize {
+    let mut dp = vec![0; p.len() + 1];
+    dp[0] = 1;
 
-    if cache.contains_key(p) {
-        return cache[p];
-    }
-
-    let mut sum = 0;
-    for i in (1..=p.len().min(max_size)).rev() {
-        if towels.contains(&p[0..i]) {
-            sum += p2(&p[i..], cache, towels, max_size);
+    for i in 0..p.len() {
+        for j in (i + 1)..=(i + max_size).min(p.len()) {
+            if towels.contains(&p[i..j]) {
+                dp[j] += dp[i];
+            }
         }
     }
-
-    cache.insert(p, sum);
-    sum
+    
+    dp[p.len()]
 }
 
 pub fn solve(str: String) -> SolutionPair {
@@ -47,15 +37,13 @@ pub fn solve(str: String) -> SolutionPair {
     let towels: HashSet<&str> = towels.split(',').map(|t| t.trim()).collect();
 
     let max_size = towels.iter().map(|t| t.len()).max().unwrap();
-    let mut cache = HashMap::new();
 
     let sol1 = patterns.lines().filter(|p| {
-        p1(p, &mut cache, &towels, max_size)
+        p1(p, &towels, max_size)
     })
     .count();
 
-    let mut cache = HashMap::new();
-    let sol2: usize = patterns.lines().map(|p| p2(p, &mut cache, &towels, max_size)).sum();
+    let sol2: usize = patterns.lines().map(|p| p2(p, &towels, max_size)).sum();
 
     (Solution::from(sol1), Solution::from(sol2))
 }
