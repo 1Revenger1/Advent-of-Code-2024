@@ -39,6 +39,9 @@ enum Pad {
 }
 
 /**
+ * Solution derived from AllanTaylor314:
+ * https://www.reddit.com/r/adventofcode/comments/1hj2odw/comment/m33qs9d
+ * 
  *   ^ A
  * < v >
  * 
