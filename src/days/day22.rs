@@ -27,17 +27,17 @@ pub fn solve(str: String) -> SolutionPair {
         .sum();
 
     // Find all possible difference sequences and their resulting prices
-    let mut score_map: HashMap<[i8; 4], i64> = HashMap::new();
+    let mut score_map: HashMap<i32, i64> = HashMap::new();
     for s in secret {
-        let mut seen: HashSet<[i8; 4]> = HashSet::new();
-        let mut vals: [i8; 4] = [0; 4];
+        let mut seen: HashSet<i32> = HashSet::new();
+        let mut vals: i32 = 0;
 
         // Initialize first three values in seen values
         let mut s = s;
-        for i in 0..3 {
+        for _ in 0..3 {
             let new = mutate(s);
             let diff = (new % 10) - (s % 10);
-            vals[i + 1] = diff as i8;
+            vals = (vals << 8) | ((diff & 0xFF) as i32);
             s = new;
         }
 
@@ -45,11 +45,7 @@ pub fn solve(str: String) -> SolutionPair {
         for _ in 3..2000 {
             let new = mutate(s);
             let diff = (new % 10) - (s % 10);
-            for i in 0..3 {
-                vals[i] = vals[i + 1];
-            }
-
-            vals[3] = diff as i8;
+            vals = (vals << 8) | ((diff & 0xFF) as i32);
             let price = new % 10;
 
             if !seen.contains(&vals) {
